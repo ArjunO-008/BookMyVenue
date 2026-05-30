@@ -1,4 +1,3 @@
-import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 
@@ -7,7 +6,7 @@ import Home from './pages/Home'
 // (npm install react-router-dom) and swap <Home /> for <Routes>.
 function App() {
   return (
-    <div className="app">
+    <div className="min-h-screen">
       <Navbar />
       <Home />
     </div>
