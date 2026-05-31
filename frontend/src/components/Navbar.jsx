@@ -1,18 +1,21 @@
-import { useState } from "react"
+import { useState } from "react";
+import {LocationModal} from "./LocationModal.jsx";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [district, setDistrict] = useState("Ernakulam");
 
   return (
     <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
 
-        {/* Top Row */}
+       
         <div className="flex h-16 items-center gap-3">
-          
 
-          {/* Logo */}
+
+          
           <div className="logo flex items-center gap-2 shrink-0">
             <div className="h-10 w-10 rounded-lg"><img src="/favicon.png" alt="icon" /></div>
             <h1 className="text-lg font-semibold text-gray-900">
@@ -30,7 +33,7 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Desktop Search */}
+          {/* Desktop */}
           <div className="searchbar hidden flex-1 px-4 md:block">
             <input
               type="text"
@@ -42,9 +45,11 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="navlinks hidden items-center gap-2 md:flex">
 
-            <button className="flex items-center gap-2 rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-600 hover:border-red-500 hover:text-red-600">
+            <button className="flex items-center gap-2 rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-600 hover:border-red-500 hover:text-red-600"
+              onClick={() => setLocationOpen(true)}
+            >
               <span>📍</span>
-              <span>Ernakulam</span>
+              <span>{district}</span>
               <span className="text-xs">▼</span>
             </button>
 
@@ -87,10 +92,12 @@ export default function Navbar() {
 
         </div>
 
-        {/* Mobile Location Row */}
+        {/* Mobile Location  */}
         <div className="pb-3 md:hidden">
-          <button className="text-sm font-medium text-red-600 hover:text-red-700">
-            📍 Ernakulam ▼
+          <button className="text-sm font-medium text-red-600 hover:text-red-700"
+            onClick={() => setLocationOpen(true)}
+          >
+            📍 {district} ▼
           </button>
         </div>
 
@@ -113,7 +120,15 @@ export default function Navbar() {
         )}
 
       </div>
+
+      {/* Location Modal */}
+      <LocationModal
+        open={locationOpen}
+        onClose={() => setLocationOpen(false)}
+        onSelect={setDistrict}
+      />
     </nav>
+
   )
 }
 
