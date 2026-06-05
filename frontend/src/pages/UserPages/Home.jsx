@@ -61,12 +61,12 @@ export function Home() {
 
 
       <HomeVenueSection
-        title="Top Rated Venues"
+        title="Top Picks"
         venues={venues.slice(0, 4)}
       />
 
       <HomeVenueSection
-        title="Best Prices"
+        title="Value Picks"
         venues={[...venues]
           .sort((a, b) => a.basePrice - b.basePrice)
           .slice(0, 4)}
