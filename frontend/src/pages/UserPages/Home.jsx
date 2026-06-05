@@ -53,6 +53,14 @@ export function Home() {
     loadData();
   }, []);
 
+  const category1 = categories.find(
+    (category) => category.name === selectedCategories[0]
+  );
+
+  const category2 = categories.find(
+    (category) => category.name === selectedCategories[1]
+  );
+
 
   return (
     <div className="px-6 py-8">
@@ -63,6 +71,7 @@ export function Home() {
       <HomeVenueSection
         title="Top Picks"
         venues={venues.slice(0, 4)}
+        showAllLink="/venue"
       />
 
       <HomeVenueSection
@@ -70,6 +79,7 @@ export function Home() {
         venues={[...venues]
           .sort((a, b) => a.basePrice - b.basePrice)
           .slice(0, 4)}
+        showAllLink="/venue"
       />
 
       {selectedCategories[0] && (
@@ -81,6 +91,7 @@ export function Home() {
                 venue.venueCategory?.name === selectedCategories[0]
             )
             .slice(0, 4)}
+          showAllLink={`/venue?category=${category1?.identifier}`}
         />
       )}
 
@@ -93,6 +104,7 @@ export function Home() {
                 venue.venueCategory?.name === selectedCategories[1]
             )
             .slice(0, 4)}
+          showAllLink={`/venue?category=${category2?.identifier}`}
         />
       )}
 

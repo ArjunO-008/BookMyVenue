@@ -4,6 +4,7 @@ import VenueCard from "./HomeVenueCard.jsx";
 export default function HomeVenueSection({
   title,
   venues,
+  showAllLink = "/venue",
 }) {
   return (
     <section className="mb-12">
@@ -13,7 +14,7 @@ export default function HomeVenueSection({
         </h2>
 
         <Link
-          to="/venue/category"
+          to={showAllLink}
           className="text-sm font-medium text-red-600 transition hover:text-red-700"
         >
           Show All →
