@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getVenues } from "../../services/venue.service.js";
+import { getVenueCategories } from "../../services/venueCategory.service.js";
 import VenueCard from "../../components/VenueCard.jsx";
 import VenueFilterModal from "../../components/VenueFilterModal.jsx"
 
@@ -8,6 +9,7 @@ export function Venue() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const [showFilterModal, setShowFilterModal] = useState(false);
 
@@ -39,6 +41,19 @@ export function Venue() {
 
     loadVenues();
   }, [page, appliedFilters]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const response = await getVenueCategories();
+        setCategories(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   if (loading) {
     return (
@@ -132,10 +147,10 @@ export function Venue() {
 
       {/* Filter Modal */}
       <VenueFilterModal
-        key={String(open)}
         open={showFilterModal}
         onClose={() => setShowFilterModal(false)}
         appliedFilters={appliedFilters}
+        categories={categories}
         onApply={(filters) => {
           setAppliedFilters(filters);
           setPage(1);
