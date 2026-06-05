@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getVenues } from "../../services/venue.service.js";
 import VenueCard from "../../components/VenueCard.jsx";
+import VenueFilterModal from "../../components/VenueFilterModal.jsx"
 
 export function Venue() {
   const [venues, setVenues] = useState([]);
@@ -8,42 +9,23 @@ export function Venue() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const [filters, setFilters] = useState({
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
+  const [appliedFilters, setAppliedFilters] = useState({
     district: "",
     category: "",
     minPrice: "",
     maxPrice: "",
   });
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
 
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setPage(1);
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      district: "",
-      category: "",
-      minPrice: "",
-      maxPrice: "",
-    });
-
-    setPage(1);
-  };
 
   useEffect(() => {
     const loadVenues = async () => {
       try {
         setLoading(true);
 
-        const response = await getVenues(page, filters);
-
+        const response = await getVenues(page, appliedFilters);
         setVenues(response.data);
         setTotalPages(response.pagination.totalPages);
 
@@ -56,7 +38,7 @@ export function Venue() {
     };
 
     loadVenues();
-  }, [page, filters]);
+  }, [page, appliedFilters]);
 
   if (loading) {
     return (
@@ -69,63 +51,40 @@ export function Venue() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      {/* Heading */}
-      <h1 className="text-3xl font-bold mb-8">
-        Venues
-      </h1>
 
-      {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">
+          Venues
+        </h1>
 
-        <input
-          type="text"
-          name="district"
-          placeholder="District"
-          value={filters.district}
-          onChange={handleFilterChange}
-          className="border rounded px-3 py-2"
-        />
-
-        <select
-          name="category"
-          value={filters.category}
-          onChange={handleFilterChange}
-          className="border rounded px-3 py-2"
+        <button
+          onClick={() => setShowFilterModal(true)}
+          className="px-4 py-2 border rounded-lg hover:bg-gray-100"
         >
-          <option value="">All Categories</option>
-          <option value="banquet-hall">Banquet Hall</option>
-          <option value="auditorium">Auditorium</option>
-          <option value="studio">Studio</option>
-          <option value="resort">Resort</option>
-        </select>
-
-        <input
-          type="number"
-          name="minPrice"
-          placeholder="Min Price"
-          value={filters.minPrice}
-          onChange={handleFilterChange}
-          className="border rounded px-3 py-2"
-        />
-
-        <input
-          type="number"
-          name="maxPrice"
-          placeholder="Max Price"
-          value={filters.maxPrice}
-          onChange={handleFilterChange}
-          className="border rounded px-3 py-2"
-        />
-
+          Filter
+        </button>
       </div>
 
-      {/* Clear Filters */}
-      <button
-        onClick={clearFilters}
-        className="px-4 py-2 border rounded mb-8 hover:bg-gray-100"
-      >
-        Clear Filters
-      </button>
+      {/* Active Filters */}
+      <div className="flex flex-wrap gap-2 mb-6">
+
+        {appliedFilters.category && (
+          <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+            {appliedFilters.category}
+          </span>
+        )}
+
+        {appliedFilters.minPrice !== "" && (
+          <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+            ₹{appliedFilters.minPrice}
+            {appliedFilters.maxPrice
+              ? ` - ₹${appliedFilters.maxPrice}`
+              : "+"}
+          </span>
+        )}
+
+      </div>
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -170,6 +129,19 @@ export function Venue() {
 
         </div>
       )}
+
+      {/* Filter Modal */}
+      <VenueFilterModal
+        key={String(open)}
+        open={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        appliedFilters={appliedFilters}
+        onApply={(filters) => {
+          setAppliedFilters(filters);
+          setPage(1);
+        }}
+      />
+
     </div>
   );
 }
