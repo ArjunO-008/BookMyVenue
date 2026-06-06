@@ -49,7 +49,7 @@ export function VenueDetails() {
             </div>
 
             {/* Single Card */}
-            <div className="bg-white rounded-2xl shadow-sm p-8">
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(15,23,42,0.12)]">
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-10">
 
