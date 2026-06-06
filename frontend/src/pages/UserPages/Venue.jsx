@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getVenues } from "../../services/venue.service.js";
 import { getVenueCategories } from "../../services/venueCategory.service.js";
-import VenueCard from "../../components/VenueCard.jsx";
-import VenueFilterModal from "../../components/VenueFilterModal.jsx"
+import VenueCard from "../../components/user/VenueCard.jsx";
+import VenueFilterModal from "../../components/user/VenueFilterModal.jsx"
 
 export function Venue() {
   const [venues, setVenues] = useState([]);

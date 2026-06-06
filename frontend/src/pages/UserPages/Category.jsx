@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getVenueCategories } from "../../services/venueCategory.service.js";
-import CategoryCard from "../../components/CategoryCard.jsx";
+import CategoryCard from "../../components/user/CategoryCard.jsx";
 
 export function Category() {
   const [categories, setCategories] = useState([]);

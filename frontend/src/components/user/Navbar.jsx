@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LocationModal } from "./LocationModal.jsx";
-import { useAuth } from "../context/authContext.js";
+import { useAuth } from "../../context/authContext.js";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

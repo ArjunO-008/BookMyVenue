@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getVenues } from "../../services/venue.service.js";
 import { getVenueCategories } from "../../services/venueCategory.service.js";
-import HomeVenueSection from "../../components/HomeVenueSection.jsx";
-import HomeBannerSection from "../../components/HomeBannerSection.jsx"
+import HomeVenueSection from "../../components/user/HomeVenueSection.jsx";
+import HomeBannerSection from "../../components/user/HomeBannerSection.jsx"
 
 function getRandomCategories(categories, count = 2) {
   const shuffled = [...categories].sort(() => Math.random() - 0.5);
