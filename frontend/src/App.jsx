@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
-import AdminNavbar from './components/AdminNavbar.jsx'
-import VenueOwnerNavbar from './components/VenueOwnerNavbar.jsx'
-import { SigninModal } from './components/SigninModal.jsx';
+import Navbar from './components/user/Navbar';
+import AdminNavbar from './components/admin/AdminNavbar.jsx'
+import VenueOwnerNavbar from './components/venueOwner/VenueOwnerNavbar.jsx'
+import { SigninModal } from './components/shared/SigninModal.jsx';
 import { Home, Venue, Category } from './pages/UserPages/UserPages.js';
 import { AdminLogin,AdminHome } from './pages/AdminPage/AdminPages.js';
 import {VenueOwnerHome,VenueOwnerLogin} from './pages/OwnerPage/VenueOwnerPage.js'

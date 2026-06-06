@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from '../context/authContext.js';
+import { useAuth } from '../../context/authContext.js';
 
 // The two self-signup tabs. `role` must match the backend's SELF_SIGNUP_ROLES.
 const TABS = [
