@@ -1,7 +1,7 @@
-import {VenueOwnerHome} from './VenueOwnerHome.jsx';
 import {VenueOwnerLogin} from './VenueOwnerLogin.jsx';
+import {VenueOwnerDashboard} from './VenueOwnerDashboard.jsx';
 
 export {
-    VenueOwnerHome,
     VenueOwnerLogin,
+    VenueOwnerDashboard,
 }

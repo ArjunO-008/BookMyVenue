@@ -17,13 +17,25 @@ const venueSchema = new mongoose.Schema(
       // Kept optional for now so seed data can exist before the User collection does.
       owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
-      name: { type: String, required: true, trim: true },
+      // Set on an EDIT COPY only: points to the original APPROVED venue this copy
+      // edits. null on every normal venue.
+      // Required to (a) link copy-> original for
+      // the merge, (b) exclude copies from the owner's venue list, (c) tell a new
+      // PENDING venue apart from an edit awaiting re-approval.
+      editOf: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Venue",
+         default: null,
+         index: true,
+      },
+
+      name: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
       // References the Category collection (admin-managed).
       venueCategory: {
          type: mongoose.Schema.Types.ObjectId,
          ref: "Category",
-         required: true,
+         default: null,
          index: true,
       },
       capacity: { type: Number, min: 0 },
@@ -42,7 +54,7 @@ const venueSchema = new mongoose.Schema(
          coordinates: { type: [Number], default: undefined }, // [lng, lat]
       },
 
-      basePrice: { type: Number, required: true, min: 0 },
+      basePrice: { type: Number, min: 0, default: null },
 
       images: { type: [venueImageSchema], default: [] },
 
@@ -50,9 +62,16 @@ const venueSchema = new mongoose.Schema(
       status: {
          type: String,
          enum: VENUE_STATUS_VALUES,
-         default: VENUE_STATUS.PENDING,
+         default: VENUE_STATUS.DRAFT,
          index: true,
       },
+
+      // Owner-controlled visibility toggle, orthogonal to `status`.
+      // false = owner disabled the listing; hidden from public but not deleted.
+      isActive: { type: Boolean, default: true },
+
+      // Set by admin on rejection (admin endpoints come later). Surfaced to the owner.
+      rejectionReason: { type: String, trim: true, default: "" },
 
       // Soft-delete marker. null = live(active).
       deletedAt: { type: Date, default: null },
