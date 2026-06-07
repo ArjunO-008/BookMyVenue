@@ -4,6 +4,7 @@ const cors = require("cors");
 const { connectDB } = require("./config/database");
 const { corsOrigin } = require("./config/config");
 const venueRoutes = require("./routes/venue");
+const venueOwnerRoutes = require("./routes/venueOwner");
 const categoryRoutes = require("./routes/category");
 const authRoutes = require("./routes/auth");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/venues", venueRoutes);
+app.use("/api/venueOwner", venueOwnerRoutes);
 app.use("/api/venueCategories", categoryRoutes);
 
 connectDB()

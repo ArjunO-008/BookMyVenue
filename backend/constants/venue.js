@@ -7,10 +7,29 @@ const VENUE_STATUS = {
    PENDING: "PENDING",
    APPROVED: "APPROVED",
    REJECTED: "REJECTED", // REJECTED means admin declined (+rejectionReason); not terminal — owner can fix & resubmit (REJECTED → submit → PENDING)
-   CHANGES_PENDING: "CHANGES_PENDING", // CHANGES_PENDING is the status for an already-approved venue that the owner has edited, while that edit waits for admin re-approval.
+   EDIT_DRAFT: "EDIT_DRAFT", // EDIT_DRAFT is an in-progress edit copy of a live (APPROVED) venue (editOf set); owner keeps editing until they submit it (EDIT_DRAFT → submit → CHANGES_PENDING).
+   CHANGES_PENDING: "CHANGES_PENDING", // CHANGES_PENDING is a submitted edit copy waiting for admin re-approval; on approve it merges into the original.
 };
+
+// Owner-initiated submit → review queue.
+//   DRAFT  → PENDING          (a new/own venue enters the queue)
+//   EDIT_DRAFT        → CHANGES_PENDING  (a drafted edit copy enters the queue)
+const SUBMITTABLE_STATUSES = Object.freeze([
+   VENUE_STATUS.DRAFT,
+   VENUE_STATUS.EDIT_DRAFT,
+]);
+
+// Statuses an edit applies in place (the doc isn't live). Covers a new venue's
+// own draft states AND a not-yet-submitted edit copy. APPROVED is absent — editing
+// an APPROVED venue spawns a new EDIT_DRAFT copy instead. AND PENDING, CHANGES_PENDING are submitted versions
+const IN_PLACE_EDIT_STATUSES = Object.freeze([
+   VENUE_STATUS.DRAFT,
+   VENUE_STATUS.EDIT_DRAFT,
+]);
 
 module.exports = {
    VENUE_STATUS,
    VENUE_STATUS_VALUES: Object.values(VENUE_STATUS),
+   SUBMITTABLE_STATUSES,
+   IN_PLACE_EDIT_STATUSES,
 };
