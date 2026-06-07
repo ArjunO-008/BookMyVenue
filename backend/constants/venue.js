@@ -3,11 +3,11 @@
 
 // Listing lifecycle. Only APPROVED venues are publicly searchable
 const VENUE_STATUS = {
-   DRAFT: "DRAFT",
-   PENDING: "PENDING",
-   APPROVED: "APPROVED",
-   REJECTED: "REJECTED", // REJECTED means admin declined (+rejectionReason); not terminal — owner can fix & resubmit (REJECTED → submit → PENDING)
-   EDIT_DRAFT: "EDIT_DRAFT", // EDIT_DRAFT is an in-progress edit copy of a live (APPROVED) venue (editOf set); owner keeps editing until they submit it (EDIT_DRAFT → submit → CHANGES_PENDING).
+   DRAFT: "DRAFT",           // Owner just created the venue; fields can be filled anytime. Not visible to admin or public.
+   PENDING: "PENDING",       // Owner submitted the venue; waiting for admin approval. Not yet public.
+   APPROVED: "APPROVED",     // Admin approved the venue; visible to the public (if isActive is true).
+   REJECTED: "REJECTED", // REJECTED means admin declined (+rejectionReason); not terminal — owner can fix & resubmit (REJECTED → change back to "DRAFT"/"EDIT_DRAFT" → submit → PENDING)
+   EDIT_DRAFT: "EDIT_DRAFT", // EDIT_DRAFT is an in-progress edit copy of a live (APPROVED) venue (editOf field set in db); owner keeps editing until they submit it (EDIT_DRAFT → submit → CHANGES_PENDING).
    CHANGES_PENDING: "CHANGES_PENDING", // CHANGES_PENDING is a submitted edit copy waiting for admin re-approval; on approve it merges into the original.
 };
 
