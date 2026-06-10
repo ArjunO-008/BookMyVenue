@@ -1,36 +1,80 @@
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { LayoutDashboard, Building2, CalendarDays, ChartColumn, Settings } from "lucide-react";
 
+const navItems = [
+  {
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/venue-owner/home",
+  },
+  {
+    label: "My Venues",
+    icon: Building2,
+    path: "/venue-owner/venues",
+  },
+  {
+    label: "Bookings",
+    icon: CalendarDays,
+    path: "/venue-owner/bookings",
+  },
+  {
+    label: "Analytics",
+    icon: ChartColumn,
+    path: "/venue-owner/analytics",
+  },
+];
 export default function VenueOwnerNavbar() {
-
   return (
-    <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
-      <div className="mx-auto max-w-7xl px-4 lg:px-6">
+    <aside className="flex h-screen w-64 flex-col border-r border-gray-200 bg-white">
+      <div className="border-b border-gray-200 px-5 py-4">
+        <Link
+          to="/venue-owner/home"
+          className="flex items-center gap-2"
+        >
+          <img
+            src="/favicon.png"
+            alt="logo"
+            className="h-8 w-8"
+          />
+          <span className="font-semibold text-gray-900">
+            BookMyVenue • Owner
+          </span>
+        </Link>
+      </div>
 
+      {/* Navigation Items */}
+      <div className="p-3">
+        <nav className="space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
 
-        <div className="flex h-16 items-center gap-3">
-
-          <div className="logo flex items-center gap-2 shrink-0">
-            <Link to="/venue-owner/home" className="flex items-center">
-              <div className="h-10 w-10 rounded-lg"><img src="/favicon.png" alt="icon" /></div>
-              <h1 className="text-lg font-semibold text-gray-900">
-                BookMyVenue • VenueOwner
-              </h1>
-            </Link>
-          </div>
-
-
-          <div className="searchbar hidden flex-1 px-4 md:block">
-            <input
-              type="text"
-              placeholder="Search venues, cafes, auditoriums..."
-              className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-red-500"
-            />
-          </div>
-
-        </div>
-      </div>     
-    </nav>
-
-  )
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                    ? "bg-red-50 text-red-600"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  }`
+                }
+              >
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+      </div>
+      <div className="mt-auto p-3 border-t border-gray-200">
+        <NavLink
+          to="/venue-owner/settings"
+          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+        >
+          <Settings size={18} />
+          <span>Settings</span>
+        </NavLink>
+      </div>
+    </aside>
+  );
 }
-

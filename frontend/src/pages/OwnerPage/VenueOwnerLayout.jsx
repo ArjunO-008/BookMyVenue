@@ -5,9 +5,12 @@ import VenueOwnerNavbar from "../../components/venueOwner/VenueOwnerNavbar.jsx";
 // The login route is rendered outside this layout.
 export function VenueOwnerLayout() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex">
       <VenueOwnerNavbar />
-      <Outlet />
+
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </div>
   );
 }
