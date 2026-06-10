@@ -5,11 +5,11 @@ import { Building2, Clock3, FileText, Ban, Plus, CalendarDays,BarChart3,Settings
 
 export function VenueOwnerDashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
 
       {/* Page Heading */}
       <section>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">
           Dashboard
         </h1>
       </section>
