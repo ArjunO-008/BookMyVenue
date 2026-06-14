@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api, getToken, setToken } from '../api/client';
+import { api, getToken, setToken, setUnauthorizedHandler } from '../api/client';
 import { AuthContext } from './authContext.js';
 
 export function AuthProvider({ children }) {
@@ -33,6 +33,13 @@ export function AuthProvider({ children }) {
       }
     }
     restoreSession();
+  }, []);
+
+  // When any API call hits a 401, the client has already dropped the token;
+  // clear the user here so route guards re-render and redirect to login,
+  // wherever the user currently is.
+  useEffect(() => {
+    setUnauthorizedHandler(() => setUser(null));
   }, []);
 
   // Exchange a Google ID token for our app JWT + user.

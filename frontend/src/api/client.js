@@ -21,6 +21,15 @@ export function setToken(token) {
   else localStorage.removeItem(TOKEN_KEY);
 }
 
+// Called when the backend rejects our token (401) on any request, so the auth
+// context can clear the stale session and route guards can redirect to login.
+// AuthProvider registers a handler here on mount; until then it's a no-op.
+let onUnauthorized = () => {};
+
+export function setUnauthorizedHandler(handler) {
+  onUnauthorized = handler;
+}
+
 async function request(path, options = {}) {
   const token = getToken();
 
@@ -46,6 +55,13 @@ async function request(path, options = {}) {
       detail = body.message || detail;
     } catch {
       // response had no JSON body; keep statusText
+    }
+    // Token invalid/expired/revoked — drop the stale session so route guards
+    // bounce the user to login. Skipped during the initial /auth/me restore,
+    // which handles its own 401 (no session exists yet to clear).
+    if (res.status === 401) {
+      setToken(null);
+      onUnauthorized();
     }
     showError(detail);
     throw new Error(`API error ${res.status}: ${detail}`);
