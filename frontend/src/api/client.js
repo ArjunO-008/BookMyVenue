@@ -3,6 +3,9 @@
 // headers, auth token, and error handling in one place.
 //
 // Vite reads env vars prefixed with VITE_ (see .env). Falls back to the
+
+import { showError } from "../utils/toastBus";
+
 // local backend if VITE_API_URL is not set.
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
@@ -20,17 +23,23 @@ export function setToken(token) {
 
 async function request(path, options = {}) {
   const token = getToken();
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {}),
-    },
-  })
+
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(options.headers || {}),
+      },
+    })
+  } catch (error) {
+    showError(error.message);
+    throw error;
+  }
 
   if (!res.ok) {
-    // Try to surface the backend's { message } for nicer errors.
     let detail = res.statusText;
     try {
       const body = await res.json();
@@ -38,6 +47,7 @@ async function request(path, options = {}) {
     } catch {
       // response had no JSON body; keep statusText
     }
+    showError(detail);
     throw new Error(`API error ${res.status}: ${detail}`);
   }
 

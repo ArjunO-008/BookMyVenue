@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import { SigninModal } from './components/shared/SigninModal.jsx';
+import { ToastViewport } from './components/shared/ToastViewport.jsx';
 import { UserLayout } from './pages/UserPages/UserLayout.jsx';
 import { VenueOwnerLayout } from './pages/OwnerPage/VenueOwnerLayout.jsx';
 import { AdminLayout } from './pages/AdminPage/AdminLayout.jsx';
@@ -11,8 +12,9 @@ import {VenueOwnerLogin,VenueOwnerDashboard} from './pages/OwnerPage/VenueOwnerP
 function App() {
   return (
     <>
-      {/* Global sign-in popup — opened from anywhere via useAuth().openSignin() */}
+      {/* Global overlays — mounted once, fired from anywhere */}
       <SigninModal />
+      <ToastViewport />
 
       <Routes>
         {/* Public User Routes */}
@@ -26,7 +28,7 @@ function App() {
         {/* Venue Owner Routings */}
         <Route path='/venue-owner' element={<VenueOwnerLogin />} />
         <Route element={<VenueOwnerLayout />}>
-          <Route path='/venue-owner/home' element={<VenueOwnerDashboard />} />
+          <Route path='/venue-owner/dashboard' element={<VenueOwnerDashboard />} />
         </Route>
 
         {/* Admin Routings */}
