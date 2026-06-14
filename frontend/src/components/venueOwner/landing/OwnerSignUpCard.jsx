@@ -5,9 +5,10 @@ import { InputWithIcon } from "../../shared/form/InputWithIcon.jsx";
 import { PasswordField } from "../../shared/form/PasswordField.jsx";
 import { EMAIL_PATTERN } from "../../shared/form/inputClasses.js";
 import bmvLogo from "../../../assets/bmvLogo.svg";
-import { api, setToken } from "../../../api/client.js";
+import { api } from "../../../api/client.js";
 import { showInfo } from "../../../utils/toastBus.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/authContext.js";
 
 // Email/password sign-up card for venue owners. Shown in place of the sign-in
 // card when the user clicks "Create an account" (parent toggles between them).
@@ -15,6 +16,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
     // A single toggle controls both the password and confirm-password fields.
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const { loginWithToken } = useAuth();
     const {
         register,
         handleSubmit,
@@ -26,7 +28,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
         try {
             const res = await api.post("/auth/venueOwner/signup", data);
             if (res.data?.token) {
-                setToken(res.data.token);
+                await loginWithToken(res.data.token);
                 showInfo("Account creation completed and logged in successfully!")
                 navigate("/venue-owner/dashboard");
             } else {

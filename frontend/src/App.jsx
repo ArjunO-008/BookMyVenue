@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import { SigninModal } from './components/shared/SigninModal.jsx';
 import { ToastViewport } from './components/shared/ToastViewport.jsx';
+import { RequireAuth } from './components/shared/RequireAuth.jsx';
 import { UserLayout } from './pages/UserPages/UserLayout.jsx';
 import { VenueOwnerLayout } from './pages/OwnerPage/VenueOwnerLayout.jsx';
 import { AdminLayout } from './pages/AdminPage/AdminLayout.jsx';
@@ -27,11 +28,13 @@ function App() {
 
         {/* Venue Owner Routings */}
         <Route path='/venue-owner' element={<VenueOwnerLogin />} />
-        <Route element={<VenueOwnerLayout />}>
-          <Route path='/venue-owner/dashboard' element={<VenueOwnerDashboard />} />
-          <Route path='/venue-owner/my-venues' element={<VenueOwnerMyVenues />} />
-          <Route path='/venue-owner/venues/new' element={<AddVenuePage />} />
-          <Route path='/venue-owner/venues/edit/:id' element={<EditVenuePage />} />
+        <Route element={<RequireAuth roles={['venueOwner']} loginPath='/venue-owner' />}>
+          <Route element={<VenueOwnerLayout />}>
+            <Route path='/venue-owner/dashboard' element={<VenueOwnerDashboard />} />
+            <Route path='/venue-owner/my-venues' element={<VenueOwnerMyVenues />} />
+            <Route path='/venue-owner/venues/new' element={<AddVenuePage />} />
+            <Route path='/venue-owner/venues/edit/:id' element={<EditVenuePage />} />
+          </Route>
         </Route>
 
         {/* Admin Routings */}
