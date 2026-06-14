@@ -3,7 +3,7 @@ export function AddVenuePage(){
     return(
         <VenueForm
         mode="create"
-      initialValues={null}
+       initialValues={""}
       />
     )
 }
