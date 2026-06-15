@@ -5,19 +5,31 @@ import { InputWithIcon } from "../../shared/form/InputWithIcon.jsx";
 import { PasswordField } from "../../shared/form/PasswordField.jsx";
 import { EMAIL_PATTERN } from "../../shared/form/inputClasses.js";
 import bmvLogo from "../../../assets/bmvLogo.svg";
+import { api } from "../../../api/client.js";
+import { showInfo } from "../../../utils/toastBus.js";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/authContext.js";
 
 // Email/password sign-in card for venue owners.
-// UI only for now — the actual login call + navigation are wired in a later slice.
 export function OwnerSignInCard({ onSwitchToSignUp }) {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const { loginWithSession } = useAuth();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    function onSubmit() {
-        // TODO (next slice): call the login API and navigate to the dashboard.
+    async function onSubmit(data) {
+        try {
+            const res = await api.post("/auth/signin", data);
+            loginWithSession(res.data.token, res.data.user);
+            showInfo("Logged in successfully!");
+            navigate("/venue-owner/dashboard");
+        } catch(error) {
+            // error is already shown by the toast from the API client
+        }
     }
 
     return (

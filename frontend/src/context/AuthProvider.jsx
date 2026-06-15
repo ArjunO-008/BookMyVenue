@@ -54,6 +54,16 @@ export function AuthProvider({ children }) {
     return user;
   }
 
+  // Adopt a session when the backend returns both the token and the user
+  // (e.g. email/password sign-in). Skips the extra /auth/me round-trip since
+  // we already have the user. Overwrites any existing session.
+  function loginWithSession(token, user) {
+    setToken(token);
+    setUser(user);
+    setSigninOpen(false);
+    return user;
+  }
+
   // Adopt a token obtained outside the Google flow (e.g. email/password
   // sign-up returns a JWT directly). Stores the token and loads the user so the
   // context — and any route guards reading it — are up to date immediately,
@@ -73,7 +83,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, loginWithGoogle, loginWithToken, logout, signinOpen, openSignin, closeSignin }}
+      value={{ user, loading, loginWithGoogle, loginWithToken, loginWithSession, logout, signinOpen, openSignin, closeSignin }}
     >
       {children}
     </AuthContext.Provider>

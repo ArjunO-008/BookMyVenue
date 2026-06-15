@@ -11,6 +11,7 @@ module.exports = {
    jwtExpiresIn: {
       customer: "7d",
       venueOwner: "1d",
+      admin: "2h"
    },
 
    // Comma-separated list of frontend origins allowed by CORS.
