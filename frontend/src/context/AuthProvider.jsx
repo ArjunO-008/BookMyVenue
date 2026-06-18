@@ -64,18 +64,6 @@ export function AuthProvider({ children }) {
     return user;
   }
 
-  // Adopt a token obtained outside the Google flow (e.g. email/password
-  // sign-up returns a JWT directly). Stores the token and loads the user so the
-  // context — and any route guards reading it — are up to date immediately,
-  // without waiting for a page reload. Overwrites any existing session.
-  async function loginWithToken(token) {
-    setToken(token);
-    const res = await api.get('/auth/me');
-    setUser(res.data.user);
-    setSigninOpen(false);
-    return res.data.user;
-  }
-
   function logout() {
     setToken(null);
     setUser(null);
@@ -83,7 +71,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, loginWithGoogle, loginWithToken, loginWithSession, logout, signinOpen, openSignin, closeSignin }}
+      value={{ user, loading, loginWithGoogle, loginWithSession, logout, signinOpen, openSignin, closeSignin }}
     >
       {children}
     </AuthContext.Provider>
