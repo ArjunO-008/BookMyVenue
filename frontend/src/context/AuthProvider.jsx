@@ -42,11 +42,10 @@ export function AuthProvider({ children }) {
     setUnauthorizedHandler(() => setUser(null));
   }, []);
 
-  // Exchange a Google ID token for our app JWT + user.
-  // `role` is the role of the tab the user signed in from
-  // ("customer" or "venueOwner").
-  async function loginWithGoogle(idToken, role) {
-    const res = await api.post('/auth/googleLogin', { idToken, role });
+  // Exchange a Google ID token for our app JWT + user. Google sign-in is for
+  // customers only; venue owners use the email/password flow.
+  async function loginWithGoogle(idToken) {
+    const res = await api.post('/auth/googleLogin', { idToken });
     const { token, user } = res.data;
     setToken(token);
     setUser(user);
