@@ -8,7 +8,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [district, setDistrict] = useState("Ernakulam");
-  const { user, logout, openSignin } = useAuth();
+  const { user, logout, openLogin } = useAuth();
 
   return (
     <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
@@ -86,9 +86,9 @@ export default function Navbar() {
               </div>
             ) : (
               <button
-               onClick={openSignin}
+               onClick={openLogin}
                className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
-                Sign In
+                Login
               </button>
             )}
           </div>
@@ -116,9 +116,9 @@ export default function Navbar() {
               </button>
             ) : (
               <button
-               onClick={openSignin}
+               onClick={openLogin}
                className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white">
-                Sign In
+                Login
               </button>
             )}
           </div>

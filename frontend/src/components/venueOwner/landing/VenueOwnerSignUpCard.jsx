@@ -10,9 +10,9 @@ import { showInfo } from "../../../utils/toastBus.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext.js";
 
-// Email/password sign-up card for venue owners. Shown in place of the sign-in
+// Email/password sign-up card for venue owners. Shown in place of the login
 // card when the user clicks "Create an account" (parent toggles between them).
-export function OwnerSignUpCard({ onSwitchToSignIn }) {
+export function VenueOwnerSignUpCard({ onSwitchToLogin }) {
     // A single toggle controls both the password and confirm-password fields.
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -32,10 +32,10 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                 showInfo("Account creation completed and logged in successfully!")
                 navigate("/venue-owner/dashboard");
             } else {
-                // account created but auto sign-in failed — tell the user and
-                // send them to the sign-in card to log in manually
+                // account created but auto login failed — tell the user and
+                // send them to the login card to log in manually
                 showInfo(res.message);
-                onSwitchToSignIn();
+                onSwitchToLogin();
             }
         } catch (error) {
             // error is already shown by the toast from the API client
@@ -63,7 +63,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
                     <InputWithIcon
-                        id="owner-name"
+                        id="venue-owner-name"
                         label="Name"
                         icon={User}
                         type="text"
@@ -77,7 +77,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                     />
 
                     <InputWithIcon
-                        id="owner-email"
+                        id="venue-owner-email"
                         label="Email"
                         icon={Mail}
                         type="email"
@@ -93,7 +93,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                     />
 
                     <PasswordField
-                        id="owner-password"
+                        id="venue-owner-password"
                         label="Password"
                         placeholder="At least 8 characters"
                         show={showPassword}
@@ -110,7 +110,7 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                     />
 
                     <PasswordField
-                        id="owner-confirm-password"
+                        id="venue-owner-confirm-password"
                         label="Confirm Password"
                         placeholder="Re-enter your password"
                         show={showPassword}
@@ -136,10 +136,10 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                     Already have an account?{" "}
                     <button
                         type="button"
-                        onClick={onSwitchToSignIn}
+                        onClick={onSwitchToLogin}
                         className="font-semibold text-red-600 hover:underline"
                     >
-                        Sign in
+                        Login
                     </button>
                 </p>
             </div>

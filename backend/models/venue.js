@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { VENUE_STATUS_VALUES, VENUE_STATUS } = require("../constants/venue");
+const { VENUE_STATUS_VALUES, VENUE_STATUSES } = require("../constants/venue");
 
 // Embedded image reference. MVP stores plain URLs only (no upload pipeline for now)
 const venueImageSchema = new mongoose.Schema(
@@ -13,14 +13,14 @@ const venueImageSchema = new mongoose.Schema(
 
 const venueSchema = new mongoose.Schema(
    {
-      // owner_id — required by the data model, but auth/owner isn't built yet.
+      // venueOwner id — required by the data model, but auth/venue owner isn't built yet.
       // Kept optional for now so seed data can exist before the User collection does.
-      owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      venueOwner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
       // Set on an EDIT COPY only: points to the original APPROVED venue this copy
       // edits. null on every normal venue.
       // Required to (a) link copy-> original for
-      // the merge, (b) exclude copies from the owner's venue list, (c) tell a new
+      // the merge, (b) exclude copies from the venue owner's venue list, (c) tell a new
       // PENDING venue apart from an edit awaiting re-approval.
       editOf: {
          type: mongoose.Schema.Types.ObjectId,
@@ -62,15 +62,15 @@ const venueSchema = new mongoose.Schema(
       status: {
          type: String,
          enum: VENUE_STATUS_VALUES,
-         default: VENUE_STATUS.DRAFT,
+         default: VENUE_STATUSES.DRAFT,
          index: true,
       },
 
-      // Owner-controlled visibility toggle, orthogonal to `status`.
-      // false = owner disabled the listing; hidden from public but not deleted.
+      // Venue owner-controlled visibility toggle, orthogonal to `status`.
+      // false = venue owner disabled the listing; hidden from public but not deleted.
       isActive: { type: Boolean, default: true },
 
-      // Set by admin on rejection (admin endpoints come later). Surfaced to the owner.
+      // Set by admin on rejection (admin endpoints come later). Surfaced to the venue owner.
       rejectionReason: { type: String, trim: true, default: "" },
 
       // Soft-delete marker. null = live(active).

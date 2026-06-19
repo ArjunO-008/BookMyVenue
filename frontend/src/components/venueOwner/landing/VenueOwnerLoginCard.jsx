@@ -10,8 +10,8 @@ import { showInfo } from "../../../utils/toastBus.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext.js";
 
-// Email/password sign-in card for venue owners.
-export function OwnerSignInCard({ onSwitchToSignUp }) {
+// Email/password login card for venue owners.
+export function VenueOwnerLoginCard({ onSwitchToSignUp }) {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const { loginWithSession } = useAuth();
@@ -23,7 +23,7 @@ export function OwnerSignInCard({ onSwitchToSignUp }) {
 
     async function onSubmit(data) {
         try {
-            const res = await api.post("/auth/signin", data);
+            const res = await api.post("/auth/login", data);
             loginWithSession(res.data.token, res.data.user);
             showInfo("Logged in successfully!");
             navigate("/venue-owner/dashboard");
@@ -42,16 +42,16 @@ export function OwnerSignInCard({ onSwitchToSignUp }) {
                         className="mx-auto mb-4 h-14 w-14"
                     />
                     <h2 className="text-2xl font-bold text-gray-900">
-                        Venue Owner Sign In
+                        Venue Owner Login
                     </h2>
                     <p className="mt-1 text-sm text-gray-500">
-                        Sign in to manage your venues and bookings.
+                        Login to manage your venues and bookings.
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
                     <InputWithIcon
-                        id="owner-email"
+                        id="venue-owner-email"
                         label="Email"
                         icon={Mail}
                         type="email"
@@ -67,7 +67,7 @@ export function OwnerSignInCard({ onSwitchToSignUp }) {
                     />
 
                     <PasswordField
-                        id="owner-password"
+                        id="venue-owner-password"
                         label="Password"
                         placeholder="Enter your password"
                         show={showPassword}
@@ -82,7 +82,7 @@ export function OwnerSignInCard({ onSwitchToSignUp }) {
                         type="submit"
                         className="w-full rounded-lg bg-red-600 py-3 text-white transition hover:bg-red-700"
                     >
-                        Sign In
+                        Login
                     </button>
                 </form>
 

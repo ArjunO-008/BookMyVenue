@@ -8,13 +8,13 @@ import { useAuth } from "../../context/authContext.js";
 // On denial — not logged in, OR logged in with the wrong role — the user is
 // sent to that route's "area". Where that is depends on `loginPath`:
 //
-//   // venue owners only -> denial redirects to the owner sign-in page
+//   // venue owners only -> denial redirects to the venue owner login page
 //   <Route element={<RequireAuth roles={["venueOwner"]} loginPath="/venue-owner" />}>...</Route>
 //
-//   // admins only -> denial redirects to the admin sign-in page
+//   // admins only -> denial redirects to the admin login page
 //   <Route element={<RequireAuth roles={["admin"]} loginPath="/admin" />}>...</Route>
 //
-//   // customer area has no login page, just the global sign-in modal:
+//   // customer area has no login page, just the global login modal:
 //   // omit loginPath -> denial sends them home and opens the modal
 //   <Route element={<RequireAuth roles={["customer"]} />}>...</Route>
 //
@@ -25,7 +25,7 @@ import { useAuth } from "../../context/authContext.js";
 // backend on load and clears it if invalid/expired), so here we only read the
 // resolved result.
 export function RequireAuth({ roles, loginPath }) {
-    const { user, loading, openSignin } = useAuth();
+    const { user, loading, openLogin } = useAuth();
 
     // Wait for the initial token check so a hard refresh doesn't bounce a
     // logged-in user to the login page before their session is restored.
@@ -34,21 +34,21 @@ export function RequireAuth({ roles, loginPath }) {
     const allowed = user && roles.includes(user.role);
     if (allowed) return <Outlet />;
 
-    // Denied. Areas with their own sign-in page (owner/admin) redirect there.
+    // Denied. Areas with their own login page (venue owner/admin) redirect there.
     // Customer-area routes have no page — they fall back to the home page plus
-    // the global sign-in modal.
+    // the global login modal.
     if (loginPath) {
         return <Navigate to={loginPath} replace />;
     }
-    return <RedirectToSignInModal openSignin={openSignin} />;
+    return <RedirectToLoginModal openLogin={openLogin} />;
 }
 
-// Customer-area denial: navigate home and open the sign-in modal. Opening the
+// Customer-area denial: navigate home and open the login modal. Opening the
 // modal is a state update, so it has to run in an effect, not during render.
-function RedirectToSignInModal({ openSignin }) {
+function RedirectToLoginModal({ openLogin }) {
     useEffect(() => {
-        openSignin();
-    }, [openSignin]);
+        openLogin();
+    }, [openLogin]);
 
     return <Navigate to="/" replace />;
 }

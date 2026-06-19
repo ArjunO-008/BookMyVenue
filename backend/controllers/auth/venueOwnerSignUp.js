@@ -27,7 +27,7 @@ module.exports.venueOwnerSignUp = async (req, res) => {
          loginToken = signAuthToken(user);
       } catch (error) {
          return res.status(201).json({
-            message: "Your account was created, but we couldn't sign you in automatically. Please sign in with your email and password.",
+            message: "Your account was created, but we couldn't log you in automatically. Please log in with your email and password.",
          });
       }
 
