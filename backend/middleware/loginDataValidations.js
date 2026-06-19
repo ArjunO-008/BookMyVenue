@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-module.exports.signInDataValidations = [
+module.exports.loginDataValidations = [
    body("email")
       .trim()
       .isEmail()

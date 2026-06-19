@@ -6,12 +6,12 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   // `loading` is true while we check an existing token on first load.
   const [loading, setLoading] = useState(true);
-  // Controls the global sign-in popup. Any component can open it via
-  // `openSignin()` (e.g. a "Book now" button on a protected action).
-  const [signinOpen, setSigninOpen] = useState(false);
+  // Controls the global login popup. Any component can open it via
+  // `openLogin()` (e.g. a "Book now" button on a protected action).
+  const [loginOpen, setLoginOpen] = useState(false);
 
-  const openSignin = () => setSigninOpen(true);
-  const closeSignin = () => setSigninOpen(false);
+  const openLogin = () => setLoginOpen(true);
+  const closeLogin = () => setLoginOpen(false);
 
   // On mount: if a token exists, ask the backend who we are.
   useEffect(() => {
@@ -42,24 +42,24 @@ export function AuthProvider({ children }) {
     setUnauthorizedHandler(() => setUser(null));
   }, []);
 
-  // Exchange a Google ID token for our app JWT + user. Google sign-in is for
+  // Exchange a Google ID token for our app JWT + user. Google login is for
   // customers only; venue owners use the email/password flow.
   async function loginWithGoogle(idToken) {
     const res = await api.post('/auth/googleLogin', { idToken });
     const { token, user } = res.data;
     setToken(token);
     setUser(user);
-    setSigninOpen(false);
+    setLoginOpen(false);
     return user;
   }
 
   // Adopt a session when the backend returns both the token and the user
-  // (e.g. email/password sign-in). Skips the extra /auth/me round-trip since
+  // (e.g. email/password login). Skips the extra /auth/me round-trip since
   // we already have the user. Overwrites any existing session.
   function loginWithSession(token, user) {
     setToken(token);
     setUser(user);
-    setSigninOpen(false);
+    setLoginOpen(false);
     return user;
   }
 
@@ -70,7 +70,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, loginWithGoogle, loginWithSession, logout, signinOpen, openSignin, closeSignin }}
+      value={{ user, loading, loginWithGoogle, loginWithSession, logout, loginOpen, openLogin, closeLogin }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { SigninModal } from './components/shared/SigninModal.jsx';
+import { LoginModal } from './components/shared/LoginModal.jsx';
 import { ToastViewport } from './components/shared/ToastViewport.jsx';
 import { RequireAuth } from './components/shared/RequireAuth.jsx';
 import { UserLayout } from './pages/UserPages/UserLayout.jsx';
@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       {/* Global overlays — mounted once, fired from anywhere */}
-      <SigninModal />
+      <LoginModal />
       <ToastViewport />
 
       <Routes>

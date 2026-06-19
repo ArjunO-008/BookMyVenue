@@ -10,9 +10,9 @@ import { showInfo } from "../../../utils/toastBus.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext.js";
 
-// Email/password sign-up card for venue owners. Shown in place of the sign-in
+// Email/password sign-up card for venue owners. Shown in place of the login
 // card when the user clicks "Create an account" (parent toggles between them).
-export function OwnerSignUpCard({ onSwitchToSignIn }) {
+export function OwnerSignUpCard({ onSwitchToLogin }) {
     // A single toggle controls both the password and confirm-password fields.
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -32,10 +32,10 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                 showInfo("Account creation completed and logged in successfully!")
                 navigate("/venue-owner/dashboard");
             } else {
-                // account created but auto sign-in failed — tell the user and
-                // send them to the sign-in card to log in manually
+                // account created but auto login failed — tell the user and
+                // send them to the login card to log in manually
                 showInfo(res.message);
-                onSwitchToSignIn();
+                onSwitchToLogin();
             }
         } catch (error) {
             // error is already shown by the toast from the API client
@@ -136,10 +136,10 @@ export function OwnerSignUpCard({ onSwitchToSignIn }) {
                     Already have an account?{" "}
                     <button
                         type="button"
-                        onClick={onSwitchToSignIn}
+                        onClick={onSwitchToLogin}
                         className="font-semibold text-red-600 hover:underline"
                     >
-                        Sign in
+                        Login
                     </button>
                 </p>
             </div>

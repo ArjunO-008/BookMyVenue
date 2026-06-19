@@ -5,7 +5,7 @@ const { verifyGoogleIdToken, toPublicUser } = require("./shared");
 
 // POST /auth/googleLogin
 // Body: { idToken } — the Google ID token from the frontend.
-// Google sign-in is for customers only; venue owners use the email/password
+// Google login is for customers only; venue owners use the email/password
 // flow. Verifies the token, creates the customer if new (or enforces that an
 // existing account is a customer), and returns our own app JWT.
 async function googleLogin(req, res) {
@@ -29,12 +29,12 @@ async function googleLogin(req, res) {
       let user = await Users.findOne({ email: profile.email });
 
       if (user) {
-         // Google sign-in only ever produces customers. A non-customer account
-         // (e.g. a venue owner) must use its own sign-in flow — refuse here.
+         // Google login only ever produces customers. A non-customer account
+         // (e.g. a venue owner) must use its own login flow — refuse here.
          if (user.role !== USER_ROLES.CUSTOMER) {
             return res.status(409).json({
                message:
-                  "This email is already registered for a different account type. Use a different email to sign in as a customer.",
+                  "This email is already registered for a different account type. Use a different email to log in as a customer.",
             });
          }
          // Keep Google-sourced fields fresh and link googleId if missing.

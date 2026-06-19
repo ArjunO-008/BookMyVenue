@@ -1,7 +1,7 @@
 import { OWNER_BENEFITS } from "./ownerBenefits.js";
 import { OwnerBenefitCard } from "./OwnerBenefitCard.jsx";
 
-// The marketing / landing content shown beside the sign-in card.
+// The marketing / landing content shown beside the login card.
 export function OwnerLandingInfo() {
     return (
         <div className="w-full lg:flex-1">

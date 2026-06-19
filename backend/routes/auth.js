@@ -3,10 +3,10 @@ const googleLogin = require("../controllers/auth/googleLogin");
 const getMe = require("../controllers/auth/getMe");
 const authenticate = require("../middleware/authenticate");
 const { signUpDataValidations } = require("../middleware/signUpDataValidations");
-const { signInDataValidations } = require("../middleware/signInDataValidations");
+const { loginDataValidations } = require("../middleware/loginDataValidations");
 const { handleExpressValidatorErrors } = require("../middleware/handleExpressValidatorErrors");
 const { venueOwnerSignUp } = require("../controllers/auth/venueOwnerSignUp");
-const { signIn } = require("../controllers/auth/signIn");
+const { login } = require("../controllers/auth/login");
 
 const router = express.Router();
 
@@ -21,10 +21,10 @@ router.post(
 );
 
 router.post(
-   "/signin",
-   signInDataValidations,
+   "/login",
+   loginDataValidations,
    handleExpressValidatorErrors,
-   signIn
+   login
 );
 
 module.exports = router;
