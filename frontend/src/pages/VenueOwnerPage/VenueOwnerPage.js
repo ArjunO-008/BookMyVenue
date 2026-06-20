@@ -5,6 +5,7 @@ import { AddVenuePage } from './AddVenuePage.jsx';
 import { EditVenuePage } from './EditVenuePage.jsx';
 import { VenueOwnerBookings } from './VenueOwnerBookings.jsx';
 import { VenueOwnerAnalytics } from './VenueOwnerAnalytics.jsx';
+import { VenueOwnerSettings } from './VenueOwnerSettings.jsx';
 
 export {
     VenueOwnerLogin,
@@ -14,4 +15,5 @@ export {
     EditVenuePage,
     VenueOwnerBookings,
     VenueOwnerAnalytics,
+    VenueOwnerSettings,
 }
