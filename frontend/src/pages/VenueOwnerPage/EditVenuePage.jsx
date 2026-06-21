@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import VenueForm from "../../components/venueOwner/VenueForm.jsx";
 import { getVenueOwnerVenueById, updateVenue, submitVenue } from "../../services/venueOwner.service.js";
+import { showInfo } from "../../utils/toastBus";
 
 export function EditVenuePage() {
     const { id } = useParams();
@@ -30,10 +31,12 @@ export function EditVenuePage() {
         await updateVenue(id, fields);
     }
 
-    // "Submit for Approval"
+    // "Submit for Approval". Lets errors propagate so VenueForm can map a
+    // missing-fields 400 onto the individual inputs.
     async function handleSubmit(payload) {
         await updateVenue(id, payload);
         await submitVenue(id);
+        showInfo("Venue submitted for review");
         navigate("/venue-owner/my-venues");
     }
 

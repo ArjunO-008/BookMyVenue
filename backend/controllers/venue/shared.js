@@ -78,6 +78,29 @@ const EDITABLE_VENUE_FIELDS = [
    "location", "basePrice", "images",
 ];
 
+// Fields that must be present before a draft can be submitted for review.
+// Drafts persist incomplete (model fields default to "" / null), so completeness
+// is enforced here at submit time. `location` and `images`
+// are intentionally omitted — coordinates are optional and images are not yet
+// part of the MVP upload pipeline.
+const REQUIRED_VENUE_FIELDS = [
+   "name", "description", "venueCategory", "capacity",
+   "addressLine", "city", "district", "state", "pincode", "basePrice",
+];
+
+// Returns the REQUIRED_VENUE_FIELDS that are missing/empty on a venue document.
+// Empty string, null, undefined, and NaN all count as missing; a 0 capacity or
+// price is allowed through here (the schema's min:0 governs range separately).
+function missingRequiredVenueFields(venue) {
+   return REQUIRED_VENUE_FIELDS.filter((field) => {
+      const value = venue[field];
+      if (value === null || value === undefined) return true;
+      if (typeof value === "string" && value.trim() === "") return true;
+      if (typeof value === "number" && Number.isNaN(value)) return true;
+      return false;
+   });
+}
+
 module.exports = {
    DEFAULT_PAGE,
    DEFAULT_LIMIT,
@@ -86,6 +109,8 @@ module.exports = {
    CATEGORY_POPULATE,
    OWNER_HIDDEN_FIELDS,
    EDITABLE_VENUE_FIELDS,
+   REQUIRED_VENUE_FIELDS,
+   missingRequiredVenueFields,
    parsePageParam,
    buildVenueFilter,
 };

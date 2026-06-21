@@ -80,6 +80,7 @@ export default function VenueForm({ initialValues = {}, onAutosave, onSubmit, on
         handleSubmit,
         trigger,
         subscribe,
+        setError,
         getValues,
         formState: { errors },
     } = useForm({
@@ -194,7 +195,18 @@ export default function VenueForm({ initialValues = {}, onAutosave, onSubmit, on
         try {
             await onSubmit({ ...buildPayload(data), imageFiles });
         } catch (err) {
-            setSubmitError(err.message || "Something went wrong. Please try again.");
+            // The submit endpoint returns { missingFields: [...] } when the draft
+            // is incomplete. The field names match this form's register keys, so
+            // flag each one inline; focus the first so the user lands on it.
+            const missingFields = err.data?.missingFields;
+            if (Array.isArray(missingFields) && missingFields.length) {
+                missingFields.forEach((field, i) =>
+                    setError(field, { type: "server", message: "This field is required." }, { shouldFocus: i === 0 })
+                );
+                setSubmitError("Please complete the highlighted fields before submitting.");
+            } else {
+                setSubmitError(err.message || "Something went wrong. Please try again.");
+            }
         } finally {
             setSubmitting(false);
         }
